@@ -10,126 +10,28 @@ c.fillRect(0, 0, canvas.width, canvas.height)
 //Grabedad
 const gravity = 0.7;
 //creando jugador enemigo y enemigo
-class Sprite {
-    constructor ({position, velocity, color = 'red', offset}) {
-        this.position = position
-        this.velocity = velocity
-        this.width = 50
-        this.height = 150
-        this.lastkey  
-        this.attackBox = {
-            position: {
-                x : this.position.x,
-                y : this.position.y
-            },
-            offset: offset,
-            width: 100,
-            height: 50
-        }
-        this.color = color 
-        this.isAttacking
-        this.health = 100
-    }
 
-    draw(){
-        c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+const background = new Sprite({
+    position:{
+        x:0,
+        y:0
+    },
+    imageSrc:'./Assets/background.png'
+})
 
-        //attack box
-        if (this.isAttacking) {
-            c.fillStyle = 'blue'
-            c.fillRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            ) 
-        }
-    }
-
-    update() {
-        this.draw()
-        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
-
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-        
-        if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-            this.velocity.y = 0
-        }else this.velocity.y += gravity
-    }
-
-    attack(){
-        this.isAttacking = true
-        setTimeout(() =>{
-            this.isAttacking = false
-        }, 100)
-    }
-}
-
-class Fighter {
-    constructor ({position, velocity, color = 'red', offset}) {
-        this.position = position
-        this.velocity = velocity
-        this.width = 50
-        this.height = 150
-        this.lastkey  
-        this.attackBox = {
-            position: {
-                x : this.position.x,
-                y : this.position.y
-            },
-            offset: offset,
-            width: 100,
-            height: 50
-        }
-        this.color = color 
-        this.isAttacking
-        this.health = 100
-    }
-
-    draw(){
-        c.fillStyle = this.color
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
-        //attack box
-        if (this.isAttacking) {
-            c.fillStyle = 'blue'
-            c.fillRect(
-                this.attackBox.position.x,
-                this.attackBox.position.y,
-                this.attackBox.width,
-                this.attackBox.height
-            ) 
-        }
-    }
-
-    update() {
-        this.draw()
-        this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
-
-        this.position.x += this.velocity.x
-        this.position.y += this.velocity.y
-        
-        if (this.position.y + this.height + this.velocity.y >= canvas.height) {
-            this.velocity.y = 0
-        }else this.velocity.y += gravity
-    }
-
-    attack(){
-        this.isAttacking = true
-        setTimeout(() =>{
-            this.isAttacking = false
-        }, 100)
-    }
-}
-
-const player = new Sprite({
+const shop = new Sprite({
+    position:{
+        x:600,
+        y:128
+    },
+    imageSrc:'./Assets/shop.png',
+    scale:2.75,
+    framesMax: 6
+})
+const player = new Fighter({
     position: {
         x: 0,
-        y: 10
+        y: 0
     },
     velocity:{
         x: 0,
@@ -138,10 +40,55 @@ const player = new Sprite({
     offset:{
         x: 0,
         y: 0
+    },
+    imageSrc: './Assets/samuraiMack/Idle.png',
+    framesMax: 8,
+    scale: 2.5,
+    offset:{
+        x: 215,
+        y: 160
+    },
+    sprites:{
+        idle : {
+            imageSrc: './Assets/samuraiMack/Idle.png',
+            framesMax: 8
+        },
+        run:{
+            imageSrc:'./Assets/samuraiMack/Run.png',
+            framesMax: 8
+        },
+        jump:{
+            imageSrc:'./Assets/samuraiMack/Jump.png',
+            framesMax: 2
+        },
+        fall:{
+            imageSrc:'./Assets/samuraiMack/Fall.png',
+            framesMax: 2
+        },
+        attack1:{
+            imageSrc:'./Assets/samuraiMack/Attack1.png',
+            framesMax: 6
+        },
+        takeHit:{
+            imageSrc:'./Assets/samuraiMack/Take Hit - white silhouette.png',
+            framesMax: 4
+        },
+        death:{
+            imageSrc:'./Assets/samuraiMack/Death.png',
+            framesMax: 6
+        }
+    },
+    attackBox:{
+        offset:{
+            x: 100,
+            y: 50
+        },
+        width:140,
+        height: 50
     }
 })
 
-const enemy = new Sprite ({
+const enemy = new Fighter ({
     position: {
         x: 400,
         y: 0
@@ -154,6 +101,52 @@ const enemy = new Sprite ({
     offset:{
         x: -50,
         y: 0
+    },
+    imageSrc: './Assets/kenji/Idle.png',
+    framesMax: 4,
+    scale: 2.5,
+    offset:{
+        x: 215,
+        y: 167
+    },
+    sprites:{
+        idle : {
+            imageSrc: './Assets/kenji/Idle.png',
+            framesMax: 4
+        },
+        run:{
+            imageSrc:'./Assets/kenji/Run.png',
+            framesMax: 8
+        },
+        jump:{
+            imageSrc:'./Assets/kenji/Jump.png',
+            framesMax: 2
+        },
+        fall:{
+            imageSrc:'./Assets/kenji/Fall.png',
+            framesMax: 2
+        },
+        attack1:{
+            imageSrc:'./Assets/kenji/Attack1.png',
+            framesMax: 4
+        },
+        takeHit:{
+            imageSrc: './Assets/kenji/Take hit.png',
+            framesMax: 3
+            
+        },
+        death:{
+            imageSrc:'./Assets/kenji/Death.png',
+            framesMax: 7
+        }
+    },
+    attackBox:{
+        offset:{
+            x: -170,
+            y: 50
+        },
+        width:170,
+        height: 50
     }
 })
 
@@ -176,43 +169,7 @@ const keys = {
     
 }
 
-function rectangularCollision({
-    rectangle1, rectangle2
-}) {
-    return(
-        rectangle1.attackBox.position.x + player.attackBox.width >= rectangle2.position.x  && 
-        rectangle1.attackBox.position.x <=  rectangle2.position.x + rectangle2.width && 
-        rectangle1.attackBox.position.y +  player.attackBox.height >=  rectangle2.position.y && 
-        rectangle1.attackBox.position.y <= rectangle2.position.y + rectangle2.height 
-    )
-}
 
-function determineWinner({player, enemy, timerId}) {
-    clearTimeout(timerId)
-    document.querySelector('#displayText').style.display = 'flex'
-    if (player.health === enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'Tie'
-    }else if (player.health > enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'player 1 Wins'
-    }else if (player.health < enemy.health) {
-        document.querySelector('#displayText').innerHTML = 'player 2 Wins'
-    }
-}
-
-let timer = 60
-let timerId
-function decreaseTimer() {
-    if (timer > 0) {
-        timerId = setTimeout(decreaseTimer, 1000)
-        timer--
-        document.querySelector('#timer').innerHTML = timer
-    }
-
-    if(timer === 0){
-        
-        determineWinner({player, enemy, timerId})
-    }
-}
 
 decreaseTimer()
 
@@ -220,46 +177,91 @@ function animate() {
     window.requestAnimationFrame(animate)
     c.fillStyle = 'black'
     c.fillRect(0, 0, canvas.width, canvas.height)
+    background.update()
+    shop.update()
+    c.fillStyle = 'rgba(255,255,255, 0.15)'
+    c.fillRect(0, 0, canvas.width, canvas.height)
     player.update()
     enemy.update()
 
     player.velocity.x = 0
     enemy.velocity.x = 0
     //player movement 
+
     if (keys.a.pressed && player.lastkey === 'a') {
         player.velocity.x = -5
+        player.switchSprite('run')
     }else if (keys.d.pressed && player.lastkey === 'd'){
         player.velocity.x = 5
+        player.switchSprite('run')
+    }else{
+        player.switchSprite('idle')
+    }
+    //jumping
+    if (player.velocity.y < 0) {
+        player.switchSprite('jump')
+    }else if (player.velocity.y > 0) {
+        player.switchSprite('fall')
     }
 
     //Enemy movement 
     if (keys.ArrowLeft.pressed && enemy.lastkey === 'ArrowLeft') {
         enemy.velocity.x = -5
+        enemy.switchSprite('run')
+
     }else if (keys.ArrowRight.pressed && lastkey === 'ArrowRight'){
         enemy.velocity.x = 5
+        enemy.switchSprite('run')
+    }else{
+        enemy.switchSprite('idle')
     }
 
-    //Detect for collision
+    //jumping
+    if (enemy.velocity.y < 0) {
+        enemy.switchSprite('jump')
+    }else if (enemy.velocity.y > 0) {
+        enemy.switchSprite('fall')
+    }
+
+    //Detect for collision & enemy gets hit
 
     if( rectangularCollision({
         rectangle1: player,
         rectangle2 : enemy,
     }) &&
-        player.isAttacking){
+        player.isAttacking && player.framesCurrent === 4){
+        enemy.takeHit()
         player.isAttacking = false 
-        enemy.health -= 20
-        document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        //document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+        gsap.to('#enemyHealth', {
+            width: enemy.health + '%'
+        })
     }
+
+    //if player misses
+    if (player.isAttacking && player.framesCurrent === 4) {
+        player.isAttacking = false
+    }
+
+    //detectec for collision & enemy gets hit
 
     if( rectangularCollision({
         rectangle1: enemy,
         rectangle2 : player,
     }) &&
-        enemy.isAttacking){
+        enemy.isAttacking && enemy.framesCurrent === 2){
+        player.takeHit()
         enemy.isAttacking = false 
-        player.health -= 20
-        document.querySelector('#playerHealth').style.width = player.health + '%'
+        //document.querySelector('#playerHealth').style.width = player.health + '%'
+        gsap.to('#playerHealth', {
+            width: player.health + '%'
+        })
     }
+
+        //if player misses
+        if (enemy.isAttacking && enemy.framesCurrent === 2) {
+            enemy.isAttacking = false
+        }
 
     // end game based on health
     if (enemy.health <= 0 || player.health <= 0) {
@@ -272,6 +274,7 @@ animate()
 //Eventos del teclado 
 
 window.addEventListener('keydown', (event) => {
+    if (!player.dead) {
     switch (event.key) {
         case 'd':
             keys.d.pressed = true
@@ -287,26 +290,30 @@ window.addEventListener('keydown', (event) => {
         case ' ':
             player.attack()
             break
-
-//moviento enemigo o rival 
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = true
-            enemy.lastkey =  'ArrowRight'
-            lastkey = 'ArrowRight'
+    }
+}
+    if (!enemy.dead) {
+        switch(event.key){
+            //moviento enemigo o rival 
+            case 'ArrowRight':
+                keys.ArrowRight.pressed = true
+                enemy.lastkey =  'ArrowRight'
+                lastkey = 'ArrowRight'
+                break
+            case 'ArrowLeft':
+                keys.ArrowLeft.pressed = true
+                enemy.lastkey =  'ArrowLeft'
+                lastkey = 'ArrowLeft'
             break
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = true
-            enemy.lastkey =  'ArrowLeft'
-            lastkey = 'ArrowLeft'
-        break
-        case 'ArrowUp':
-            enemy.velocity.y = -20
-            break
-        case 'ArrowDown':
-            enemy.isAttacking = true
-            break                
-        default:
-            break;
+            case 'ArrowUp':
+                enemy.velocity.y = -20
+                break
+            case 'ArrowDown':
+                enemy.attack()
+                break                
+            default:
+                break;
+        }
     }
 })
 
